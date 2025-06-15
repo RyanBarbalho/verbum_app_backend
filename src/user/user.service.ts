@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Streak } from "src/streak/entities/streak.entity";
-import { StreakService } from "src/streak/streak.service";
 import { Repository } from "typeorm";
+import { Streak } from "../streak/entities/streak.entity";
+import { StreakService } from "../streak/streak.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { User } from "./entities/user.entity";
 

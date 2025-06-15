@@ -2,11 +2,11 @@ import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 
 export const databaseConfig: TypeOrmModuleOptions = {
     type: 'postgres',
-    host: 'localhost',
-    port: 5432,
-    username: 'postgres',
-    password: '123',
-    database: 'verbum_db',
+    host: process.env.DB_HOST as string || 'localhost',
+    port: parseInt(process.env.DB_PORT as string) || 5432,
+    username: process.env.DB_USERNAME as string || 'postgres',
+    password: process.env.DB_PASSWORD as string || '123',
+    database: process.env.DB_DATABASE as string || 'verbum_db',
     entities: [__dirname + '/../**/*.entity{.ts,.js}'],
     synchronize: true, //quando estiver em produção setta pra false
     logging: ['error', 'warn'], // Only log errors and warnings
