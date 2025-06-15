@@ -1,5 +1,7 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { Streak } from "src/streak/entities/streak.entity";
+import { StreakService } from "src/streak/streak.service";
 import { Repository } from "typeorm";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { User } from "./entities/user.entity";
@@ -8,7 +10,8 @@ import { User } from "./entities/user.entity";
 export class UserService {
     constructor(
         @InjectRepository(User)
-        private userRepository: Repository<User>
+        private userRepository: Repository<User>,
+        private streakService: StreakService
     ) {}
 
     async create(createUserDto: CreateUserDto): Promise<User> {
@@ -21,9 +24,12 @@ export class UserService {
     }
 
     async find(id: string): Promise<User> {
-        const user = await this.userRepository.findOne({where: {id}});
+        const user = await this.userRepository.findOne({
+            where: {id},
+            relations: ['streak']//faz com que pegue o streak data junto com o userdata
+        });
         if (!user) {
-            throw new Error('User not found');
+            throw new NotFoundException('User not found');
         }
         return user;
     }
@@ -31,7 +37,7 @@ export class UserService {
     async findByEmail(email: string): Promise<User> {
         const user = await this.userRepository.findOne({where: {email}});
         if (!user) {
-            throw new Error('User not found');
+            throw new NotFoundException('User not found');
         }
         return user;
     }
@@ -39,7 +45,7 @@ export class UserService {
     async editUser(id: string, updateData: Partial<User>): Promise<User> {
         const result = await this.userRepository.update(id,updateData);
         if (result.affected === 0) {
-            throw new Error('User not found');
+            throw new NotFoundException('User not found');
         }
         const updatedUser = await this.userRepository.findOne({where: {id}});
         if (!updatedUser) {
@@ -53,5 +59,18 @@ export class UserService {
         if (result.affected === 0) {
             throw new Error('User not found');
         }
+    }
+
+    async getStreak(id: string): Promise<Streak> {
+        const user = await this.find(id);
+        return user.streak;
+    }
+
+    async incrementStreak(id: string): Promise<Streak> {
+        const user = await this.find(id);
+        if (!user.streak) {
+            throw new Error('User has no streak');
+        }
+        return this.streakService.incrementStreak(user.streak.id);
     }
 }

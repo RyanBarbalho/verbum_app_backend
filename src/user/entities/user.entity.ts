@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Streak } from 'src/streak/entities/streak.entity';
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('users')
 export class User {
@@ -19,4 +20,8 @@ export class User {
 
     @CreateDateColumn()
     createdAt: Date;
+
+    @OneToOne(() => Streak, {cascade: true})
+    @JoinColumn()
+    streak: Streak;
 }
