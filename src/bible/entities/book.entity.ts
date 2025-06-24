@@ -16,7 +16,7 @@ export class Book {
     testament: 'old' | 'new';
 
     @Column()
-    number: number;
+    order: number;
 
     @Column()
     description: string;

@@ -12,7 +12,11 @@ export class Verse {
     @Column({ type: 'text' })
     text: string;
 
-    @ManyToOne(() => Chapter, chapter => chapter.verses, { onDelete: 'CASCADE'})
+    @ManyToOne(
+        () => Chapter,
+        chapter => chapter.verses,
+        { onDelete: 'CASCADE'}
+    )
     chapter: Chapter;
 
     @Column()

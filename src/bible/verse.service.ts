@@ -1,16 +1,22 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CreateVerseDto } from './dto/verse.dto';
 import { Verse } from './entities/verse.entity';
 
 @Injectable()
-export class BibleService {
+export class VerseService {
     constructor(
         @InjectRepository(Verse)
         private verseRepository: Repository<Verse>,
     ) {}
 
-    // Verse methods
+    // Create methods
+    async create(dto: CreateVerseDto): Promise<Verse> {
+        const verse = this.verseRepository.create(dto);
+        return this.verseRepository.save(verse);
+    }
+
     async findVersesByChapter(chapterId: string): Promise<Verse[]> {
         return this.verseRepository.find({
             where: { chapterId },

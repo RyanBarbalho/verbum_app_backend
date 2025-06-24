@@ -1,16 +1,28 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CreateChapterDto } from './dto/chapter.dto';
 import { Chapter } from './entities/chapter.entity';
 
 @Injectable()
-export class BibleService {
+export class ChapterService {
     constructor(
         @InjectRepository(Chapter)
         private chapterRepository: Repository<Chapter>,
     ) {}
 
-    //chapter Methods
+    async create(dto: CreateChapterDto): Promise<Chapter> {
+        const chapter = this.chapterRepository.create(dto);
+        return this.chapterRepository.save(chapter);
+    }
+
+    async delete(id: string): Promise<void> {
+        const result = await this.chapterRepository.delete(id);
+        if (result.affected === 0) {
+            throw new NotFoundException(`Chapter with id ${id} not found`);
+        }
+    }
+
     async findChaptersByBook(bookId: string): Promise<Chapter[]> {
         return this.chapterRepository.find({
             where:{ bookId},
