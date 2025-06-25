@@ -19,6 +19,8 @@ export class BibleController {
 
     // ==================== BOOK ENDPOINTS ====================
 
+    // POST https://localhost:3000/bible/books
+    // Creates a new book in the Bible database
     @Post('books')
     async createBook(@Body() dto: CreateBookDto): Promise<Book> {
         try {
@@ -28,11 +30,15 @@ export class BibleController {
         }
     }
 
+    // GET https://localhost:3000/bible/books
+    // Retrieves all books from the Bible database
     @Get('books')
     async getAllBooks(): Promise<Book[]> {
         return this.bookService.findAllBooks();
     }
 
+    // GET https://localhost:3000/bible/books/:id
+    // Retrieves a specific book by its unique identifier
     @Get('books/:id')
     async getBookById(@Param('id') id: string): Promise<Book> {
         try {
@@ -42,6 +48,8 @@ export class BibleController {
         }
     }
 
+    // GET https://localhost:3000/bible/books/abbreviation/:abbreviation
+    // Retrieves a book by its abbreviation (e.g., "Gen" for Genesis)
     @Get('books/abbreviation/:abbreviation')
     async getBookByAbbreviation(@Param('abbreviation') abbreviation: string): Promise<Book> {
         try {
@@ -51,6 +59,8 @@ export class BibleController {
         }
     }
 
+    // GET https://localhost:3000/bible/books/name/:name
+    // Retrieves a book by its full name (e.g., "Genesis", "Matthew")
     @Get('books/name/:name')
     async getBookByName(@Param('name') name: string): Promise<Book> {
         try {
@@ -60,11 +70,15 @@ export class BibleController {
         }
     }
 
+    // GET https://localhost:3000/bible/books/testament/:testament
+    // Retrieves all books from a specific testament ("old" or "new")
     @Get('books/testament/:testament')
     async getBooksByTestament(@Param('testament') testament: 'old' | 'new'): Promise<Book[]> {
         return this.bookService.findByTestament(testament);
     }
 
+    // DELETE https://localhost:3000/bible/books/:id
+    // Deletes a book from the database by its ID
     @Delete('books/:id')
     async deleteBook(@Param('id') id: string): Promise<{ message: string }> {
         try {
@@ -77,6 +91,8 @@ export class BibleController {
 
     // ==================== CHAPTER ENDPOINTS ====================
 
+    // POST https://localhost:3000/bible/chapters
+    // Creates a new chapter for a specific book
     @Post('chapters')
     async createChapter(@Body() dto: CreateChapterDto): Promise<Chapter> {
         try {
@@ -86,11 +102,15 @@ export class BibleController {
         }
     }
 
+    // GET https://localhost:3000/bible/books/:bookId/chapters
+    // Retrieves all chapters for a specific book
     @Get('books/:bookId/chapters')
     async getChaptersByBook(@Param('bookId') bookId: string): Promise<Chapter[]> {
         return this.chapterService.findChaptersByBook(bookId);
     }
 
+    // GET https://localhost:3000/bible/chapters/:id
+    // Retrieves a specific chapter by its unique identifier
     @Get('chapters/:id')
     async getChapterById(@Param('id') id: string): Promise<Chapter> {
         try {
@@ -100,6 +120,8 @@ export class BibleController {
         }
     }
 
+    // GET https://localhost:3000/bible/books/:bookId/chapters/:chapterNumber
+    // Retrieves a specific chapter by book ID and chapter number
     @Get('books/:bookId/chapters/:chapterNumber')
     async getChapterByBookAndNumber(
         @Param('bookId') bookId: string,
@@ -112,6 +134,8 @@ export class BibleController {
         }
     }
 
+    // DELETE https://localhost:3000/bible/chapters/:id
+    // Deletes a chapter from the database by its ID
     @Delete('chapters/:id')
     async deleteChapter(@Param('id') id: string): Promise<{ message: string }> {
         try {
@@ -124,6 +148,8 @@ export class BibleController {
 
     // ==================== VERSE ENDPOINTS ====================
 
+    // POST https://localhost:3000/bible/verses
+    // Creates a new verse for a specific chapter
     @Post('verses')
     async createVerse(@Body() dto: CreateVerseDto): Promise<Verse> {
         try {
@@ -133,11 +159,15 @@ export class BibleController {
         }
     }
 
+    // GET https://localhost:3000/bible/chapters/:chapterId/verses
+    // Retrieves all verses for a specific chapter
     @Get('chapters/:chapterId/verses')
     async getVersesByChapter(@Param('chapterId') chapterId: string): Promise<Verse[]> {
         return this.verseService.findVersesByChapter(chapterId);
     }
 
+    // GET https://localhost:3000/bible/verses/:id
+    // Retrieves a specific verse by its unique identifier
     @Get('verses/:id')
     async getVerseById(@Param('id') id: string): Promise<Verse> {
         try {
@@ -147,6 +177,8 @@ export class BibleController {
         }
     }
 
+    // GET https://localhost:3000/bible/books/:bookId/chapters/:chapterNumber/verses/:verseNumber
+    // Retrieves a specific verse by book ID, chapter number, and verse number
     @Get('books/:bookId/chapters/:chapterNumber/verses/:verseNumber')
     async getVerseByReference(
         @Param('bookId') bookId: string,
@@ -162,6 +194,8 @@ export class BibleController {
 
     // ==================== SEARCH ENDPOINTS ====================
 
+    // GET https://localhost:3000/bible/search?q=:query
+    // Searches for verses containing the specified text in their content
     @Get('search')
     async searchVerses(@Query('q') query: string): Promise<Verse[]> {
         if (!query) {
@@ -172,6 +206,8 @@ export class BibleController {
 
     // ==================== HIERARCHICAL ENDPOINTS ====================
 
+    // GET https://localhost:3000/bible/books/:bookId/full
+    // Retrieves a complete book with all its chapters and verses in a hierarchical structure
     @Get('books/:bookId/full')
     async getBookWithChaptersAndVerses(@Param('bookId') bookId: string): Promise<Book> {
         try {
@@ -190,6 +226,8 @@ export class BibleController {
         }
     }
 
+    // GET https://localhost:3000/bible/books/:bookId/chapters/:chapterNumber/full
+    // Retrieves a complete chapter with all its verses for a specific book and chapter number
     @Get('books/:bookId/chapters/:chapterNumber/full')
     async getChapterWithVerses(
         @Param('bookId') bookId: string,
