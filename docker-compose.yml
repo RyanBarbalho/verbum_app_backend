@@ -16,8 +16,10 @@ services:
     depends_on:
       - db
     volumes:
-      - .:/verbum-backend
-      - /verbum-backend/node_modules
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    stdin_open: true
+    tty: true
 
   db:
     image: postgres:15-alpine

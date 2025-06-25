@@ -1,11 +1,18 @@
 FROM node:20-alpine
 
+# Create app directory
 WORKDIR /usr/src/app
 
+# Copy package files first for better caching
 COPY package*.json ./
 
-RUN npm install
+# Install dependencies with security updates
+RUN npm ci --audit=false && \
+    npm audit fix --force && \
+    npm update cross-spawn && \
+    npm dedupe
 
+# Copy source code
 COPY . .
 
 EXPOSE 3000
