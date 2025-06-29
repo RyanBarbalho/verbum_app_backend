@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString, IsUUID } from "class-validator";
+import { IsNotEmpty, IsNumber, IsUUID } from "class-validator";
 
 export class CreateChapterDto {
 
@@ -6,9 +6,7 @@ export class CreateChapterDto {
     @IsNotEmpty()
     number: number;
 
-    @IsString()
-    @IsNotEmpty()
-    description: string;
+    // description: string;
 
     @IsUUID()
     @IsNotEmpty()
