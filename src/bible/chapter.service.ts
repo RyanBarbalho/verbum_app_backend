@@ -23,6 +23,7 @@ export class ChapterService {
         }
     }
 
+    //finds All chapters from certain book
     async findChaptersByBook(bookId: string): Promise<Chapter[]> {
         return this.chapterRepository.find({
             where:{ bookId},
