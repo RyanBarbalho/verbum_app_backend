@@ -44,14 +44,20 @@ curl http://localhost:3000/bible/books/{bookId}/chapters
 
 ## 🗄️ Database Access
 
-### pgAdmin (Web Interface)
+### pgAdmin Options
+
+#### **Option 1: pgAdmin Web (Docker)**
 - **URL:** http://localhost:5050
 - **Email:** admin@admin.com
 - **Password:** admin
 
+#### **Option 2: pgAdmin Desktop (Standalone)**
+- **Download:** https://www.pgadmin.org/download/
+- **Install:** Follow the installation guide for your OS
+
 #### **Step-by-step pgAdmin Setup:**
-1. **Open browser:** Go to http://localhost:5050
-2. **Login:** Email: `admin@admin.com`, Password: `admin`
+1. **Open pgAdmin** (Desktop app or browser at http://localhost:5050)
+2. **Login:** Email: `admin@admin.com`, Password: `admin` (if using web version)
 3. **Add Server:**
    - Right-click "Servers" → "Register" → "Server"
    - **General tab:** Name: `Verbum DB` (or any name)
