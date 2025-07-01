@@ -28,7 +28,8 @@ export class BookService {
     //will fetch all books ordered by their number param
     async findAllBooks(): Promise<Book[]> {
         return this.bookRepository.find({
-            order: { order: 'ASC'}
+            order: { order: 'ASC'},
+            relations: ['chapters']
         })
     }
 
@@ -68,7 +69,8 @@ export class BookService {
     async findByTestament(testament: 'old' | 'new'): Promise<Book[]> {
         return this.bookRepository.find({
             where: {testament},
-            order: {order: 'ASC'}
+            order: {order: 'ASC'},
+            relations: ['chapters']
         });
     }
 }

@@ -9,7 +9,7 @@ import { AppModule } from '../../app.module';
 import { BookService } from '../../bible/book.service';
 import { ChapterService } from '../../bible/chapter.service';
 import { VerseService } from '../../bible/verse.service';
-import { handleAbbreviation } from './util';
+import { handleAbbreviation, handleDescription } from './util';
 
 async function seedBible() {
     let app;
@@ -46,7 +46,7 @@ async function seedBible() {
                     dto.abbreviation = handleAbbreviation(book.nome);
                     dto.testament = key === "antigoTestamento" ? "old" : "new";
                     dto.order = i + 1;
-                    // dto.description = handleDescription(book.nome);
+                    dto.description = handleDescription(book.nome);
                     let bookCreated;
                     try{
                         bookCreated = await bookService.createBook(dto);
@@ -69,6 +69,7 @@ async function seedBible() {
                     // const chapters
                     const chapters = book.capitulos;
                     const chapterKeys = Object.keys(chapters)
+                    console.log(`Processing ${chapterKeys.length} chapters for book: ${book.nome}`);
                     for (let j = 0; j < chapterKeys.length; j++) {
                         const bookId = bookCreated.id;
                         const chapterKey = chapterKeys[j];
@@ -78,7 +79,8 @@ async function seedBible() {
                         dto.bookId = bookId;
                         let chapterCreated;
                         try{
-                            chapterCreated = await chapterService.createChapter(dto);
+                            chapterCreated = await chapterService.create(dto);
+                            console.log(`✔ Created chapter ${chapter.capitulo} for book: ${book.nome}`);
                         } catch (error) {
                             console.error('❌ failed to create chapter: ', chapter.capitulo, '. error: ', error.message);
                             throw error;
@@ -125,8 +127,6 @@ async function seedBible() {
         }
     }
 }
-
-
 
 seedBible()
     .then(() => {

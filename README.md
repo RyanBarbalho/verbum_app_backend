@@ -1,98 +1,238 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Verbum Bible API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A NestJS-based REST API for accessing Bible data with books, chapters, and verses.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🚀 Quick Start
 
-## Description
+### Prerequisites
+- Node.js (v18+)
+- Docker & Docker Compose
+- Git
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Project setup
-
+### 1. Clone and Install
 ```bash
-$ npm install
+git clone <your-repo-url>
+cd verbum_app_backend
+npm install
 ```
 
-## Compile and run the project
-
+### 2. Start the System
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+# Start all services (API + PostgreSQL + pgAdmin)
+docker-compose up -d
 ```
 
-## Run tests
-
+### 3. Seed the Database
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+# Populate with Bible data
+npm run seed:bible
 ```
 
-## Deployment
+> **💡 Database Persistence:** The data persists between container restarts thanks to Docker volumes. You only need to seed once unless you run `docker-compose down -v` (which removes the volume).
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
+### 4. Test the API
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+# Get all books
+curl http://localhost:3000/bible/books
+
+# Get a specific book
+curl "http://localhost:3000/bible/books/name/G%C3%AAnesis"
+
+# Get chapters of a book
+curl http://localhost:3000/bible/books/{bookId}/chapters
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## 🗄️ Database Access
 
-## Resources
+### pgAdmin (Web Interface)
+- **URL:** http://localhost:5050
+- **Email:** admin@admin.com
+- **Password:** admin
 
-Check out a few resources that may come in handy when working with NestJS:
+#### **Step-by-step pgAdmin Setup:**
+1. **Open browser:** Go to http://localhost:5050
+2. **Login:** Email: `admin@admin.com`, Password: `admin`
+3. **Add Server:**
+   - Right-click "Servers" → "Register" → "Server"
+   - **General tab:** Name: `Verbum DB` (or any name)
+   - **Connection tab:**
+     - Host: `localhost`
+     - Port: `5432`
+     - Database: `verbum_db`
+     - Username: `postgres`
+     - Password: `123`
+   - Click "Save"
+4. **Test Connection:** You should see your database in the left panel
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### Cursor IDE Database Browser
+- **Host:** localhost
+- **Port:** 5432
+- **Database:** verbum_db
+- **Username:** postgres
+- **Password:** 123
 
-## Support
+#### **Step-by-step Cursor Setup:**
+1. **Open Database Panel:** Click database icon in left sidebar
+2. **Add Connection:** Click "+" → Select "PostgreSQL"
+3. **Connection Details:**
+   - Host: `localhost`
+   - Port: `5432`
+   - Database: `verbum_db`
+   - Username: `postgres`
+   - Password: `123`
+4. **Test & Connect:** Click "Test Connection" → "Connect"
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### Command Line
+```bash
+# Connect to PostgreSQL container
+docker exec -it verbum_app_backend-db-1 psql -U postgres -d verbum_db
+```
 
-## Stay in touch
+#### **Useful SQL Commands:**
+```sql
+-- List all tables
+\dt
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+-- View table structure
+\d books
+\d chapters
+\d verses
 
-## License
+-- Check data counts
+SELECT COUNT(*) FROM books;
+SELECT COUNT(*) FROM chapters;
+SELECT COUNT(*) FROM verses;
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+-- Check relationships
+SELECT b.name, COUNT(c.id) as chapter_count 
+FROM books b 
+LEFT JOIN chapters c ON b.id = c."bookId" 
+GROUP BY b.id, b.name;
+```
+
+## 🔧 Development
+
+### Available Scripts
+```bash
+# Development
+npm run start:dev          # Start with hot reload
+npm run start:debug        # Start with debug mode
+
+# Database
+npm run seed:bible         # Seed Bible data
+npm run docker:up          # Start containers
+npm run docker:down        # Stop containers
+
+# Testing
+npm run test               # Unit tests
+npm run test:e2e           # E2E tests
+```
+
+### Reset Database
+```bash
+# Option 1: Using pgAdmin
+# Right-click verbum_db → Delete → Create new database
+
+# Option 2: Using SQL
+DROP DATABASE IF EXISTS verbum_db;
+CREATE DATABASE verbum_db;
+
+# Option 3: Nuclear reset (removes all data permanently)
+docker-compose down -v
+docker-compose up -d
+npm run seed:bible
+```
+
+### Test API
+```bash
+# Install axios for testing
+npm install axios
+
+# Run the test script
+node test-api.js
+```
+
+### Automated Testing
+```bash
+# Unit tests
+npm run test          # Run all unit tests
+npm run test:watch    # Run tests in watch mode
+npm run test:cov      # Run tests with coverage
+
+# End-to-End tests (requires app to be running)
+npm run test:e2e
+```
+
+## 📚 API Endpoints
+
+### Books
+- `GET /bible/books` - Get all books
+- `GET /bible/books/:id` - Get book by ID
+- `GET /bible/books/name/:name` - Get book by name
+- `GET /bible/books/abbreviation/:abbr` - Get book by abbreviation
+- `GET /bible/books/testament/:testament` - Get books by testament (old/new)
+
+### Chapters
+- `GET /bible/books/:bookId/chapters` - Get chapters of a book
+- `GET /bible/chapters/:id` - Get chapter by ID
+- `GET /bible/books/:bookId/chapters/:number` - Get chapter by book and number
+
+### Verses
+- `GET /bible/chapters/:chapterId/verses` - Get verses of a chapter
+- `GET /bible/verses/:id` - Get verse by ID
+- `GET /bible/books/:bookId/chapters/:chapterNumber/verses/:verseNumber` - Get verse by reference
+
+### Full Content
+- `GET /bible/books/:bookId/full` - Get full book with all chapters and verses
+- `GET /bible/books/:bookId/chapters/:chapterNumber/full` - Get full chapter with all verses
+
+### Search
+- `GET /bible/search?q=:query` - Search verses by text
+
+## 🐛 Troubleshooting
+
+### Database Connection Issues
+```bash
+# Check if containers are running
+docker ps
+
+# Check container logs
+docker-compose logs db
+docker-compose logs api
+
+# Restart containers
+docker-compose restart
+```
+
+### URL Encoding for Accented Characters
+For book names with accents, use URL encoding:
+- `Gênesis` → `G%C3%AAnesis`
+- `Êxodo` → `%C3%8Axodo`
+
+### Reset Everything
+```bash
+# Complete reset
+docker-compose down -v
+docker-compose up -d
+npm run seed:bible
+```
+
+## 📁 Project Structure
+```
+src/
+├── bible/                 # Bible module
+│   ├── entities/         # Database entities
+│   ├── dto/             # Data transfer objects
+│   ├── *.service.ts     # Business logic
+│   └── *.controller.ts  # API endpoints
+├── database/
+│   └── seed/            # Database seeding
+└── config/              # Configuration files
+```
+
+## 🔗 Technologies
+- **Framework:** NestJS
+- **Database:** PostgreSQL
+- **ORM:** TypeORM
+- **Containerization:** Docker & Docker Compose
+- **Database GUI:** pgAdmin

@@ -18,7 +18,7 @@ export class Book {
     @Column()
     order: number;
 
-    @Column()
+    @Column({ nullable: true })
     description: string;
 
     @OneToMany(() => Chapter, chapter => chapter.book, { cascade: true })

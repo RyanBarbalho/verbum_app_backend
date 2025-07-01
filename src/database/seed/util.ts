@@ -1,3 +1,7 @@
+export function handleDescription(name: string): string {
+    return `Livro de ${name}`;
+}
+
 export function handleAbbreviation(name: string) {
     switch (name) {
         // Old Testament

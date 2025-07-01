@@ -64,7 +64,9 @@ export class BibleController {
     @Get('books/name/:name')
     async getBookByName(@Param('name') name: string): Promise<Book> {
         try {
-            return await this.bookService.findBookByName(name);
+            // Decode the URL-encoded parameter
+            const decodedName = decodeURIComponent(name);
+            return await this.bookService.findBookByName(decodedName);
         } catch (error) {
             throw new HttpException('Book not found', HttpStatus.NOT_FOUND);
         }

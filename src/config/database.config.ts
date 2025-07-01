@@ -2,7 +2,7 @@ import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 
 export const databaseConfig: TypeOrmModuleOptions = {
     type: 'postgres',
-    host: process.env.DB_HOST as string || 'localhost',
+    host: process.env.DB_HOST as string || (process.platform === 'win32' ? 'localhost' : 'host.docker.internal'),
     port: parseInt(process.env.DB_PORT as string) || 5432,
     username: process.env.DB_USERNAME as string || 'postgres',
     password: process.env.DB_PASSWORD as string || '123',
