@@ -4,7 +4,7 @@ const BASE_URL = 'http://localhost:3000';
 
 async function testAPI() {
     try {
-        console.log('🧪 Testing Bible API...\n');
+        console.log(' Testing Bible API...\n');
 
         // Test 1: Get all books
         console.log('1. Getting all books...');
@@ -55,7 +55,7 @@ async function testAPI() {
             console.log(`✅ Found ${chapterVerses.data.length} verses in chapter ${firstChapter.number}\n`);
         }
 
-        console.log('🎉 All tests passed!');
+        console.log(' All tests passed!');
 
     } catch (error) {
         console.error('❌ Test failed:', error.response?.data || error.message);
